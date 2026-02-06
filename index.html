@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-            user-select: none;
+            font-family: Arial, sans-serif;
         }
 
         body, html {
@@ -18,235 +16,237 @@
             background: #000;
         }
 
-        #background {
+        #loadingScreen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: url('loading.jpg') center/cover;
-            z-index: 1;
-        }
-
-        .container {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            z-index: 10;
+            background: #000 url('vgui/loading.jpg') center/cover;
         }
 
         .server-name {
             position: absolute;
-            left: 5%;
-            top: 58%;
-            width: 60%;
-            height: 9%;
-            font-size: clamp(32px, 5vw, 56px);
-            color: rgba(255, 245, 235, 1);
+            left: 50px;
+            top: 58vh;
+            width: 25vw;
+            height: 9vh;
+            font-size: 56px;
+            color: rgb(255, 245, 235);
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            line-height: 9vh;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-weight: bold;
         }
 
-        .info-section {
-            position: absolute;
-            left: 5%;
-            top: 58%;
-            font-size: clamp(24px, 3vw, 32px);
-            color: rgba(255, 255, 255, 0.8);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        .label {
+            font-size: 32px;
+            color: rgba(255,255,255,0.78);
+            text-align: center;
+            line-height: 4.5vh;
         }
 
-        .info-label {
-            position: absolute;
-            font-weight: bold;
-        }
-
-        .info-panel {
-            position: absolute;
-            background: rgba(40, 40, 40, 0.8);
+        .panel {
+            background: rgba(40,40,40,0.78);
             border-radius: 4px;
-            padding: 0 12px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        .players { top: 9.5%; }
-        .players-label { left: 0%; }
-        .players-panel { left: 0%; width: fit-content; height: 4.5%; }
-
-        .mode { top: 9.5%; left: 5%; }
-        .mode-label { left: 0%; }
-        .mode-panel { left: 0%; width: fit-content; height: 4.5%; }
-
-        .map { top: 9.5%; left: 12%; }
-        .map-label { left: 0%; }
-        .map-panel { left: 0%; width: fit-content; height: 4.5%; }
-
-        .right-panel {
+        .players-label {
             position: absolute;
-            right: 10%;
-            bottom: 15%;
-            text-align: left;
-        }
-
-        .loading-title {
-            font-size: clamp(40px, 6vw, 56px);
-            color: rgba(255, 245, 235, 1);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            font-weight: bold;
-            margin-bottom: 2%;
-        }
-
-        .progress-text {
-            font-size: clamp(20px, 2.5vw, 28px);
-            color: rgba(255, 255, 255, 0.8);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-            margin-top: 1%;
-        }
-
-        .cancel-btn {
-            position: absolute;
-            right: 0;
-            bottom: 0;
+            left: 50px;
+            top: 64vh;
             width: 12vw;
+            height: 4.5vh;
+        }
+
+        .players-panel {
+            position: absolute;
+            left: 50px;
+            top: 64.95vh;
+            height: 4.5vh;
+        }
+
+        .mode-label {
+            position: absolute;
+            left: calc(50px + 5vw);
+            top: 64vh;
+            width: 12vw;
+            height: 4.5vh;
+        }
+
+        .mode-panel {
+            position: absolute;
+            left: calc(50px + 5vw);
+            top: 64.95vh;
+            height: 4.5vh;
+        }
+
+        .map-label {
+            position: absolute;
+            left: calc(50px + 12vw);
+            top: 64vh;
+            width: 12vw;
+            height: 4.5vh;
+        }
+
+        .map-panel {
+            position: absolute;
+            left: calc(50px + 12vw);
+            top: 64.95vh;
+            height: 4.5vh;
+        }
+
+        .panel-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 32px;
+            color: rgba(255,255,255,0.78);
+            text-align: center;
+            line-height: 4.5vh;
+        }
+
+        .cancel-button {
+            position: absolute;
+            left: 78vw;
+            top: 85vh;
+            width: 10vw;
             height: 8vh;
-            min-width: 120px;
-            min-height: 60px;
-            background: linear-gradient(180deg, #c63f2a 0%, #8b2e1b 100%);
+            background: #c63f2a;
             border: none;
-            border-radius: 8px;
-            color: #e4b3ac;
-            font-size: clamp(20px, 2.5vw, 32px);
+            border-radius: 4px;
+            color: rgb(228, 179, 172);
+            font-size: 32px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(198, 63, 42, 0.4);
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             transition: all 0.2s ease;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
 
-        .cancel-btn:hover {
+        .cancel-button:hover {
+            background: #d94f3b;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(198, 63, 42, 0.6);
         }
 
-        .cancel-btn:active {
+        .cancel-button:active {
             transform: translateY(0);
         }
 
-        .door-icon {
+        .cancel-button::before {
+            content: "";
             width: 35%;
             height: 35%;
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.8));
+            background: url('icons/open_door.png') center/contain no-repeat;
+            background-color: rgb(228, 179, 172);
+            border-radius: 4px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .loading-label {
+            position: absolute;
+            left: calc(78vw + 12vw);
+            top: calc(85vh - 3vh);
+            width: 35vw;
+            height: 12vh;
+            font-size: 56px;
+            color: rgb(255, 245, 235);
+            text-align: left;
+            line-height: 12vh;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .progress-label {
+            position: absolute;
+            left: calc(78vw + 12vw);
+            top: calc(85vh + 8vh * 0.2);
+            width: 35vw;
+            height: 8vh;
+            font-size: 28px;
+            color: rgba(255,255,255,0.78);
+            text-align: left;
+            line-height: 8vh;
         }
     </style>
 </head>
 <body>
-    <div id="background"></div>
-    
-    <div class="container">
-        <div class="server-name" id="serverName">RUST SERVER</div>
+    <div id="loadingScreen">
+        <div class="server-name" id="serverName">Server Name</div>
 
-        <!-- Players -->
-        <div class="info-section players">
-            <div class="info-label players-label">PLAYERS</div>
-            <div class="info-panel players-panel">
-                <span id="playersCount">0/64</span>
-            </div>
+        <div class="players-label label">PLAYERS</div>
+        <div class="players-panel panel" id="playersPanel">
+            <div class="panel-content">12/64</div>
         </div>
 
-        <!-- Mode -->
-        <div class="info-section mode">
-            <div class="info-label mode-label">MODE</div>
-            <div class="info-panel mode-panel">
-                <span>SURVIVAL</span>
-            </div>
+        <div class="mode-label label">MODE</div>
+        <div class="mode-panel panel">
+            <div class="panel-content">SURVIVAL</div>
         </div>
 
-        <!-- Map -->
-        <div class="info-section map">
-            <div class="info-label map-label">MAP</div>
-            <div class="info-panel map-panel">
-                <span id="mapName">rust_serverside</span>
-            </div>
+        <div class="map-label label">MAP</div>
+        <div class="map-panel panel" id="mapPanel">
+            <div class="panel-content">gm_construct</div>
         </div>
 
-        <!-- Right Panel -->
-        <div class="right-panel">
-            <button class="cancel-btn" onclick="cancelLoading()">
-                <svg class="door-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
-                    <path d="M14.5 12c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5.67 1.5 1.5 1.5 1.5-.67 1.5-1.5z"/>
-                </svg>
-                CANCEL
-            </button>
-            
-            <div class="loading-title">LOADING</div>
-            <div class="progress-text" id="progressText">SPAWNING WORLD (0%)</div>
-        </div>
+        <button class="cancel-button" onclick="closeLoading()">CANCEL</button>
+
+        <div class="loading-label">LOADING</div>
+        <div class="progress-label" id="progressLabel">SPAWNING WORLD (0%)</div>
     </div>
 
     <script>
-        // Инициализация данных из GMod
-        function init() {
-            // Получаем данные от Lua через engine.Call
-            const serverName = engine.Call("GetHostName") || "RUST SERVER";
-            const playerCount = engine.Call("player.GetCount") || 0;
-            const maxPlayers = engine.Call("GetConVarInt", "sv_maxplayers") || 64;
-            const mapName = engine.Call("game.GetMap") || "rust_serverside";
-            
-            document.getElementById('serverName').textContent = serverName;
-            document.getElementById('playersCount').textContent = `${playerCount}/${maxPlayers}`;
-            document.getElementById('mapName').textContent = mapName;
-        }
-
-        // Анимация прогресса
+        // Анимация прогресса (аналог timer.Create)
         const progressStages = ["SPAWNING WORLD", "LOADING TERRAIN", "BUILDING ENTITIES", "FINALIZING"];
         let currentStage = 0;
         let progressValue = 0;
         const startTime = Date.now();
 
-        function updateProgress() {
-            if (!document.body.contains(document.getElementById('progressText'))) return;
-            
+        const progressInterval = setInterval(() => {
             const elapsed = (Date.now() - startTime) / 1000;
             progressValue = Math.min(elapsed * 35, 100);
 
             if (progressValue >= 25 && currentStage === 0) {
                 currentStage = 1;
+                document.getElementById('progressLabel').textContent = `${progressStages[1]} (25%)`;
             } else if (progressValue >= 50 && currentStage === 1) {
                 currentStage = 2;
+                document.getElementById('progressLabel').textContent = `${progressStages[2]} (50%)`;
             } else if (progressValue >= 85 && currentStage === 2) {
                 currentStage = 3;
+                document.getElementById('progressLabel').textContent = `${progressStages[3]} (85%)`;
+            } else {
+                document.getElementById('progressLabel').textContent = 
+                    `${progressStages[currentStage]} (${Math.round(progressValue)}%)`;
             }
-
-            const stageText = progressStages[currentStage];
-            document.getElementById('progressText').textContent = 
-                `${stageText} (${Math.round(progressValue)}%)`;
-
-            requestAnimationFrame(updateProgress);
-        }
+        }, 200);
 
         // Автозакрытие через 7 секунд
         setTimeout(() => {
-            engine.Call("LoadingScreen.Close");
+            closeLoading();
         }, 7000);
 
-        // Функция отмены
-        function cancelLoading() {
-            engine.Call("LoadingScreen.Close");
+        function closeLoading() {
+            clearInterval(progressInterval);
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 1s';
+            setTimeout(() => {
+                document.body.remove();
+            }, 1000);
         }
 
-        // Запуск
-        init();
-        updateProgress();
+        // Установка динамических данных
+        document.getElementById('serverName').textContent = GetHostName ? GetHostName() : 'Rust Server';
+        document.getElementById('playersPanel').querySelector('.panel-content').textContent = 
+            `${playerCount || 12}/${maxPlayers || 64}`;
+        document.getElementById('mapPanel').querySelector('.panel-content').textContent = 
+            gameMap || 'gm_construct';
     </script>
 </body>
 </html>
