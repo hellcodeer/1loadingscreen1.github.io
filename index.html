@@ -31,21 +31,27 @@
             top: 58vh;
             width: 25vw;
             height: 9vh;
-            font-size: 56px;
+            font-size: clamp(48px, 5.6vw, 56px);
             color: rgb(255, 245, 235);
             text-align: center;
-            line-height: 9vh;
+            line-height: 1;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .label {
-            font-size: 32px;
+            font-size: clamp(28px, 3.2vw, 32px);
             color: rgba(255,255,255,0.78);
             text-align: center;
-            line-height: 4.5vh;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .panel {
@@ -66,6 +72,9 @@
             left: 50px;
             top: 64.95vh;
             height: 4.5vh;
+            width: auto;
+            padding: 0 14px;
+            min-width: 80px;
         }
 
         .mode-label {
@@ -81,6 +90,9 @@
             left: calc(50px + 5vw);
             top: 64.95vh;
             height: 4.5vh;
+            width: auto;
+            padding: 0 10px;
+            min-width: 80px;
         }
 
         .map-label {
@@ -96,6 +108,9 @@
             left: calc(50px + 12vw);
             top: 64.95vh;
             height: 4.5vh;
+            width: auto;
+            padding: 0 10px;
+            min-width: 80px;
         }
 
         .panel-content {
@@ -104,10 +119,13 @@
             top: 0;
             width: 100%;
             height: 100%;
-            font-size: 32px;
+            font-size: clamp(28px, 3.2vw, 32px);
             color: rgba(255,255,255,0.78);
             text-align: center;
-            line-height: 4.5vh;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .cancel-button {
@@ -120,7 +138,7 @@
             border: none;
             border-radius: 4px;
             color: rgb(228, 179, 172);
-            font-size: 32px;
+            font-size: clamp(28px, 3.2vw, 32px);
             font-weight: bold;
             cursor: pointer;
             display: flex;
@@ -129,6 +147,40 @@
             gap: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cancel-button::before {
+            content: "";
+            position: absolute;
+            left: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 35%;
+            height: 35%;
+            background: #662b00;
+            border-radius: 4px;
+            mask: url('icons/open_door.png') center/contain no-repeat;
+            -webkit-mask: url('icons/open_door.png') center/contain no-repeat;
+            mask-size: contain;
+            z-index: 1;
+        }
+
+        .cancel-button::after {
+            content: "";
+            position: absolute;
+            left: 8%;
+            top: 48%;
+            transform: translateY(-50%);
+            width: 35%;
+            height: 35%;
+            background: rgb(228, 179, 172);
+            border-radius: 4px;
+            mask: url('icons/open_door.png') center/contain no-repeat;
+            -webkit-mask: url('icons/open_door.png') center/contain no-repeat;
+            mask-size: contain;
+            z-index: 2;
         }
 
         .cancel-button:hover {
@@ -140,27 +192,19 @@
             transform: translateY(0);
         }
 
-        .cancel-button::before {
-            content: "";
-            width: 35%;
-            height: 35%;
-            background: url('icons/open_door.png') center/contain no-repeat;
-            background-color: rgb(228, 179, 172);
-            border-radius: 4px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-        }
-
         .loading-label {
             position: absolute;
             left: calc(78vw + 12vw);
             top: calc(85vh - 3vh);
             width: 35vw;
             height: 12vh;
-            font-size: 56px;
+            font-size: clamp(48px, 5.6vw, 56px);
             color: rgb(255, 245, 235);
             text-align: left;
-            line-height: 12vh;
+            line-height: 1;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
         }
 
         .progress-label {
@@ -169,16 +213,18 @@
             top: calc(85vh + 8vh * 0.2);
             width: 35vw;
             height: 8vh;
-            font-size: 28px;
+            font-size: clamp(24px, 2.8vw, 28px);
             color: rgba(255,255,255,0.78);
             text-align: left;
-            line-height: 8vh;
+            line-height: 1;
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
 <body>
     <div id="loadingScreen">
-        <div class="server-name" id="serverName">Server Name</div>
+        <div class="server-name" id="serverName">Rust Survival Server</div>
 
         <div class="players-label label">PLAYERS</div>
         <div class="players-panel panel" id="playersPanel">
@@ -240,13 +286,6 @@
                 document.body.remove();
             }, 1000);
         }
-
-        // Установка динамических данных
-        document.getElementById('serverName').textContent = GetHostName ? GetHostName() : 'Rust Server';
-        document.getElementById('playersPanel').querySelector('.panel-content').textContent = 
-            `${playerCount || 12}/${maxPlayers || 64}`;
-        document.getElementById('mapPanel').querySelector('.panel-content').textContent = 
-            gameMap || 'gm_construct';
     </script>
 </body>
 </html>
